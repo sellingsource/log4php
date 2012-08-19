@@ -31,7 +31,7 @@ class LoggerPatternConverterThrowable extends LoggerPatternConverter {
 	private $depth;
 	
 	public function activateOptions() {
-		if (isset($this->option) && is_numeric($op) && $op >= 0) {
+		if (isset($this->option) && is_numeric($this->option) && $this->option >= 0) {
 			$this->depth = (integer) $this->option;
 		}
 	}
@@ -56,9 +56,19 @@ class LoggerPatternConverterThrowable extends LoggerPatternConverter {
 				if (isset($this->depth) && $key > $this->depth) {
 					break;
 				}
-				$strEx .= PHP_EOL . "#$key " . 
-					"{$item['file']}:{$item['line']} " .
-					"in {$item['class']}{$item['type']}{$item['function']}()"; 
+				$strEx .= PHP_EOL . "#$key ";
+
+				if (isset($item['file']))
+				{
+					$strEx .= "{$item['file']}:{$item['line']} ";
+				}
+				$strEx .= "in ";
+
+				if (isset($item['class']))
+				{
+					$strEx .= "{$item['class']}{$item['type']}";
+				}
+				$strEx .= "{$item['function']}()";
 			}
 		}
 		
